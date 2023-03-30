@@ -501,10 +501,29 @@ int getBalance(TNode* root){
  */
 void printHuffmanEncoding( TNode* root, char c ){
     //TODO
-    if (root->pLeft){
-        printf("c\n",c);
-    }
-printf("str %c \n",c);
+int arr[c];
+    // printf("%d",strchr(root,c));
+     for (int i=0;i<c;i++){
+        if(root->pLeft)
+        
+        {
+            arr[c]=0;
+            printf("1");
+        
+     
+
+
+     }if (root->pRight)
+     {
+         arr[c] = 1;
+      
+     }
+   
+     
+    
+   printf("%d",arr[i]);
+     }
+    
 }
 
 /**********  Functions for Segment Tree **********/
