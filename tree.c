@@ -499,31 +499,34 @@ int getBalance(TNode* root){
  * It may help to use the String.h function strchr. (check out https://www.tutorialspoint.com/c_standard_library/c_function_strchr.htm for usage details)
  *
  */
-void printHuffmanEncoding( TNode* root, char c ){
+void printHuffmanEncoding( TNode* root, char c  ){
     //TODO
-int arr[c];
-    // printf("%d",strchr(root,c));
-     for (int i=0;i<c;i++){
-        if(root->pLeft)
-        
-        {
-            arr[c]=0;
-            printf("1");
-        
-     
+ 
+    if (root == NULL)
+    {
+        return;
+    }
 
+ 
 
-     }if (root->pRight)
-     {
-         arr[c] = 1;
-      
-     }
    
-     
-    
-   printf("%d",arr[i]);
-     }
-    
+
+    if (root->pRight)
+    {
+        if (strchr(root->str, c))
+        {
+            printf("1");
+            printHuffmanEncoding(root->pRight, c);
+        }
+    }
+      if (root->pLeft)
+    {
+        if (strchr(root->str, c))
+        {
+            printf("0");
+            printHuffmanEncoding(root->pLeft, c);
+        }
+    }
 }
 
 /**********  Functions for Segment Tree **********/
@@ -556,7 +559,32 @@ TNode* constructSegmentTree( double* points, int low, int high ){
  */
 void insertSegment( TNode* root, double segmentStart, double segmentEnd ){
     //TODO
+if(root==NULL)
+{
+    return;
+}
+if (segmentEnd < root->pLeft->height || segmentEnd >root->pRight-> height)
+{
 
+    return;
+}
+
+    if (segmentStart <=  root->pLeft->height && segmentEnd >= root->pRight->height)
+    {
+        root->cnt+=1;
+
+            return;
+    }
+    if (root->pLeft == root->pRight)
+    {
+            if (segmentStart <= root->pLeft->height && segmentEnd >= root->pLeft->height)
+            {
+            root->cnt += 1;
+            }
+            insertSegment(root->pLeft, segmentStart, segmentEnd);
+            insertSegment(root->pRight, segmentStart, segmentEnd);
+            root->cnt = root->pLeft->cnt + root->pRight->cnt;
+    }
 }
 
 /* lineStabQuery
@@ -567,8 +595,19 @@ void insertSegment( TNode* root, double segmentStart, double segmentEnd ){
  */
 int lineStabQuery( TNode* root, double queryPoint ){
     //TODO
+    int count =root->cnt;
+if(root==NULL)
+{
+    return 0;
+}
+if(queryPoint>=root->pLeft->low ||queryPoint > root->pRight->high)
+{
+  return 0;
 
-    return -1;
+}
+count += lineStabQuery(root->pLeft, queryPoint);
+count += lineStabQuery(root->pRight, queryPoint);
+return count;
 }
 
 
