@@ -563,27 +563,23 @@ if(root==NULL)
 {
     return;
 }
-if (segmentEnd < root->pLeft->height || segmentEnd >root->pRight-> height)
+else  if (segmentStart < root->low || segmentEnd >root-> high)
 {
 
     return;
 }
 
-    if (segmentStart <=  root->pLeft->height && segmentEnd >= root->pRight->height)
+   else if (segmentStart >=  root->low && segmentEnd <= root->high)
     {
         root->cnt+=1;
 
             return;
     }
-    if (root->pLeft == root->pRight)
-    {
-            if (segmentStart <= root->pLeft->height && segmentEnd >= root->pLeft->height)
-            {
-            root->cnt += 1;
-            }
+   else
+{
             insertSegment(root->pLeft, segmentStart, segmentEnd);
             insertSegment(root->pRight, segmentStart, segmentEnd);
-            root->cnt = root->pLeft->cnt + root->pRight->cnt;
+         
     }
 }
 
@@ -595,19 +591,26 @@ if (segmentEnd < root->pLeft->height || segmentEnd >root->pRight-> height)
  */
 int lineStabQuery( TNode* root, double queryPoint ){
     //TODO
-    int count =root->cnt;
+    int Lcount;
+    int Rcount;
 if(root==NULL)
 {
     return 0;
 }
-if(queryPoint>=root->pLeft->low ||queryPoint > root->pRight->high)
+else  if(queryPoint< root->low ||queryPoint > root->high)
 {
   return 0;
 
+}else{
+  Lcount= lineStabQuery(root->pLeft->cnt, queryPoint);
+Rcount=lineStabQuery(root->pRight->cnt, queryPoint);
+printf("lcount %d \n",Lcount);
+printf("rcount %d \n",Rcount);
+
+root->cnt=Lcount+Rcount;
+return root->cnt;
 }
-count += lineStabQuery(root->pLeft, queryPoint);
-count += lineStabQuery(root->pRight, queryPoint);
-return count;
+
 }
 
 
