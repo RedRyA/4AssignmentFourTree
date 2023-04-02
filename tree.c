@@ -296,7 +296,7 @@ void rebalanceTree(Tree* t, TNode* x){
     
  TNode* z;
 int z_bal;
-int x_bal=getBalance(x);
+
 // traverse tree to find unbalanced node
     while(x!=NULL)
     {     
@@ -513,7 +513,7 @@ void printHuffmanEncoding( TNode* root, char c  ){
 
     if (root->pRight)
     {
-        if (strchr(root->str, c))
+        if (strchr(root->pRight->str, c))
         {
             printf("1");
             printHuffmanEncoding(root->pRight, c);
@@ -521,7 +521,7 @@ void printHuffmanEncoding( TNode* root, char c  ){
     }
       if (root->pLeft)
     {
-        if (strchr(root->str, c))
+        if (strchr(root->pLeft->str, c))
         {
             printf("0");
             printHuffmanEncoding(root->pLeft, c);
@@ -563,17 +563,15 @@ if(root==NULL)
 {
     return;
 }
-else  if (segmentStart < root->low || segmentEnd >root-> high)
+else if (segmentStart == root->low || segmentEnd == root->high)
 {
-
     return;
 }
 
-   else if (segmentStart >=  root->low && segmentEnd <= root->high)
-    {
-        root->cnt+=1;
-
-            return;
+else if (root->high - root->low < segmentEnd&&root->high -root->low>segmentStart)
+{
+    root->cnt += 1;
+    return;
     }
    else
 {
@@ -591,26 +589,23 @@ else  if (segmentStart < root->low || segmentEnd >root-> high)
  */
 int lineStabQuery( TNode* root, double queryPoint ){
     //TODO
-    int Lcount;
-    int Rcount;
+    int lCount;
+    int rCount;
+    int count;
 if(root==NULL)
 {
     return 0;
 }
-else  if(queryPoint< root->low ||queryPoint > root->high)
+else  if(queryPoint==root->low || queryPoint==root->high)
 {
   return 0;
-
 }else{
-  Lcount= lineStabQuery(root->pLeft->cnt, queryPoint);
-Rcount=lineStabQuery(root->pRight->cnt, queryPoint);
-printf("lcount %d \n",Lcount);
-printf("rcount %d \n",Rcount);
-
-root->cnt=Lcount+Rcount;
-return root->cnt;
+lCount= lineStabQuery(root->pLeft, queryPoint);
+rCount=lineStabQuery(root->pRight, queryPoint);
+//printf("lCount %d rCount %d \n",lCount,rCount);
 }
-
+count=lCount+rCount+root->cnt;
+return count;
 }
 
 
